@@ -5,9 +5,10 @@
  */
 
 // REACT & 3rd PARTY MODULES
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, {Component, PropTypes} from 'react';
 import Autobind from 'autobind-decorator';
+import { connect } from 'react-redux';
+
 
 // CONTROLLERS
 
@@ -15,23 +16,15 @@ import Autobind from 'autobind-decorator';
 
 // OTHERS
 
-/** ==========================================   COMPONENT DESCRIPTION   ========================================= **/
+/** ==========================================   COMPONENT INTERFACE   ========================================= **/
 
-class Component extends React.Component {
+class Header extends Component {
 
-    // COMPONENT INTERFACE & STATE ===================================================================================
-
-    // Data types of properties.
-    static propTypes = {};
-
-    // Default values of properties.
-    static defaultProps = {};
+    static propTypes = {
+        loadTweetsRequest: PropTypes.func
+    };
 
     // COMPONENT LIFECYCLE ===========================================================================================
-
-    constructor(props) {
-        super(props);
-}
 
     componentWillMount() {
     }
@@ -55,19 +48,24 @@ class Component extends React.Component {
 
     // PRIVATE METHODS ===============================================================================================
 
+    onLoadButtonClicked(){
+        const username = this.refs.usernameInput.value;
+        this.props.loadTweetsRequest(username);
+    }
+
     // RENDER ========================================================================================================
 
     render() {
-        console.log('RENDER', this.props);
         return (
-            <div className="component">
-                <button onClick={this.props.incrementClicked}>Increment</button>
-                <button onClick={this.props.decrementClicked}>Decrement</button>
-                <h1>{this.props.shownNumber}</h1>
-                <h2>User: {this.props.shownUser}</h2>
+            <div className="header">
+                <label>@</label>
+                <input type="text" placeholder="username" ref="usernameInput"/>
+                <button className="load-button" onClick={this.onLoadButtonClicked}>LOAD TWEETS</button>
             </div>
         );
     }
 }
 
-export default Autobind(Component);
+const Wired = Autobind(Header);
+const Connected = connect()(Wired);
+export default Connected;

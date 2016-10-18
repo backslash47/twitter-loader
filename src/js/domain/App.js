@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Autobind from 'autobind-decorator';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import MainReducer from './reducers/MainReducer';
-import Page from '../controller/Page';
+import thunk from 'redux-thunk';
+
+import AppReducer from './reducers/AppReducer';
+import HomePage from '../view/HomePage';
 
 import './Styles';
 
@@ -11,7 +13,8 @@ class App extends Component {
 
     constructor(){
         super();
-        this.Store = createStore(MainReducer);
+        let Thunk = applyMiddleware(thunk);
+        this.Store = createStore(AppReducer, Thunk);
     }
 
     Store = null;
@@ -19,7 +22,7 @@ class App extends Component {
     render() {
         return (
             <Provider store={this.Store}>
-                <Page ahoj={22}/>
+                <HomePage/>
             </Provider>
         );
     }
